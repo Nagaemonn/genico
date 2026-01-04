@@ -84,10 +84,13 @@ class IconResizer {
         // プリセットアイコンを決定
         const icon = this.getPresetIcon(id);
         
+        // サイズを昇順でソートして表示の統一感を保つ
+        const sortedSizes = [...preset.sizes].sort((a, b) => a - b);
+        
         card.innerHTML = `
             <div class="preset-icon">${icon}</div>
             <div class="preset-name">${preset.name}</div>
-            <div class="preset-sizes">${preset.sizes.join(' × ')}px</div>
+            <div class="preset-sizes">${sortedSizes.join(' × ')}px</div>
             <div class="preset-format">${preset.format.toUpperCase()}</div>
         `;
         

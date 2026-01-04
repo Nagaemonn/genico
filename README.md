@@ -56,7 +56,7 @@ uv run server.py -H localhost
 または、エントリーポイントを使用：
 
 ```bash
-uv run icon-resizer
+uv run genico
 ```
 
 ### 従来の方法（pip使用）

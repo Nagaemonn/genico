@@ -8,7 +8,7 @@ resolution-markers = [
 ]
 
 [[package]]
-name = "icon-resizer"
+name = "genico"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [

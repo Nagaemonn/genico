@@ -1,5 +1,5 @@
 [project]
-name = "icon-resizer"
+name = "genico"
 version = "1.0.0"
 description = "アイコン用画像ファイルを適切にリサイズするWebサービス"
 readme = "README.md"
@@ -9,5 +9,5 @@ dependencies = [
 ]
 
 [project.scripts]
-icon-resizer = "server:run_server"
+genico = "server:run_server"
 
