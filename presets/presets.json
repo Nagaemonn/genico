@@ -1,0 +1,23 @@
+{
+  "chrome_extension": {
+    "name": "chrome_extension",
+    "sizes": [16, 32, 48, 128],
+    "format": "png",
+    "bundle": "zip",
+    "filename_pattern": "icon{size}.png"
+  },
+  "macos_icon": {
+    "name": "macos_icon",
+    "sizes": [16, 32, 64, 128, 256, 512, 1024],
+    "format": "icns",
+    "bundle": "icns",
+    "filename_pattern": "AppIcon.icns"
+  },
+  "favicon": {
+    "name": "Favicon",
+    "sizes": [256, 128, 48, 32, 16],
+    "format": "ico",
+    "bundle": "single",
+    "filename_pattern": "favicon.ico"
+  }
+}

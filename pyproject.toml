@@ -1,0 +1,13 @@
+[project]
+name = "icon-resizer"
+version = "1.0.0"
+description = "アイコン用画像ファイルを適切にリサイズするWebサービス"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "Pillow>=10.0.0",
+]
+
+[project.scripts]
+icon-resizer = "server:run_server"
+

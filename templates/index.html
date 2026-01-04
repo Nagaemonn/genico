@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Resizer - アイコン画像リサイズツール</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">
+                <span class="icon">🖼️</span>
+                Icon Resizer
+            </h1>
+            <p class="subtitle">アップロードした画像を様々なサイズのアイコンに変換</p>
+        </header>
+
+        <main class="main">
+            <!-- アップロードエリア -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📁</div>
+                        <h3>画像をアップロード</h3>
+                        <p>ドラッグ&ドロップまたはクリックしてファイルを選択</p>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                            ファイルを選択
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- プレビューエリア -->
+                <div class="preview-area" id="previewArea" style="display: none;">
+                    <div class="preview-header">
+                        <h3>プレビュー</h3>
+                        <button class="clear-btn" id="clearBtn">×</button>
+                    </div>
+                    <div class="preview-content">
+                        <img id="previewImage" alt="プレビュー画像">
+                        <div class="image-info" id="imageInfo"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- プリセット選択エリア -->
+            <section class="preset-section">
+                <h2>プリセットを選択</h2>
+                <div class="preset-grid" id="presetGrid">
+                    <!-- プリセットカードがここに動的に追加される -->
+                </div>
+                
+                <!-- カスタムサイズオプション -->
+                <div class="custom-section">
+                    <h3>カスタムサイズ</h3>
+                    <div class="custom-input-group">
+                        <input type="text" id="customSizes" placeholder="例: 16,32,48,64" 
+                               pattern="[0-9, ]+" title="カンマ区切りでサイズを入力">
+                        <button class="custom-btn" id="customBtn">カスタムサイズで変換</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 処理中表示 -->
+            <div class="processing" id="processing" style="display: none;">
+                <div class="spinner"></div>
+                <p>画像を処理中...</p>
+            </div>
+
+            <!-- エラーメッセージ -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <span class="error-icon">⚠️</span>
+                <span class="error-text"></span>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 Icon Resizer. シンプルで使いやすいアイコン変換ツール</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
