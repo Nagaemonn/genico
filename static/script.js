@@ -81,16 +81,15 @@ class IconResizer {
         card.className = 'preset-card';
         card.dataset.presetId = id;
         
-        // プリセットアイコンを決定
-        const icon = this.getPresetIcon(id);
-        
+        const iconSvg = this.getPresetIconSvg(id);
+
         // サイズを昇順でソートして表示の統一感を保つ
         const sortedSizes = [...preset.sizes].sort((a, b) => a - b);
-        
+
         card.innerHTML = `
-            <div class="preset-icon">${icon}</div>
+            <div class="preset-icon" aria-hidden="true">${iconSvg}</div>
             <div class="preset-name">${preset.name}</div>
-            <div class="preset-sizes">${sortedSizes.join(' × ')}px</div>
+            <div class="preset-sizes">${sortedSizes.join(', ')} px</div>
             <div class="preset-format">${preset.format.toUpperCase()}</div>
         `;
         
@@ -100,13 +99,19 @@ class IconResizer {
         return card;
     }
     
-    getPresetIcon(presetId) {
-        const iconMap = {
-            'chrome_extension': '🌐',
-            'macos_icon': '🍎',
-            'favicon': '🔗'
+    getPresetIconSvg(presetId) {
+        const svgs = {
+            chrome_extension:
+                '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M3 12h18M12 3a15 15 0 000 18M12 3a15 15 0 010 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+            macos_icon:
+                '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 7h6M9 11h6M9 15h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+            favicon:
+                '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><rect x="3" y="5" width="18" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="7" r="0.6" fill="currentColor"/><circle cx="9.2" cy="7" r="0.6" fill="currentColor"/><circle cx="11.4" cy="7" r="0.6" fill="currentColor"/></svg>'
         };
-        return iconMap[presetId] || '📱';
+        return (
+            svgs[presetId] ||
+            '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 9h6v6H9z" stroke="currentColor" stroke-width="1.5"/></svg>'
+        );
     }
     
     selectPreset(presetId, cardElement) {
