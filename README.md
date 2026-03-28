@@ -1,121 +1,96 @@
 # Genico
-入力された画像ファイルをアイコン向けにリサイズするWebサービス
+
+ブラウザから1枚の画像を渡すと、Chrome 拡張用の複数 PNG、`favicon.ico`、macOS の `AppIcon.icns`（または iconset の ZIP）など、アイコン用のサイズ別ファイルをまとめて取り出せるローカル向けのツールです。手元の変換コマンドやスクリプトを毎回そろえる手間を減らしたいとき向けで、サーバー側の依存は Python と Pillow が中心です。
+
+![Web UI](docs/images/genico_introduction.png)
 
 ## 特徴
 
-- 🖼️ **簡単な画像アップロード**: ドラッグ&ドロップまたはクリックで画像をアップロード
-- 📱 **プリセット対応**: Chrome拡張、macOSアイコン、Webファビコンなどのプリセットサイズ
-- ⚙️ **カスタムサイズ**: 任意のサイズを指定してリサイズ可能
-- 🎨 **モダンなUI**: 清潔感のあるグリーンベースのデザイン
-- 📦 **ZIPダウンロード**: 複数サイズの場合はZIPファイルで一括ダウンロード
-- 🔧 **拡張可能**: JSONファイルでプリセットを簡単に追加可能
+- ドラッグ＆ドロップ、またはクリックでアップロード
+- プリセットで Chrome Extension / macOS App Icon / Favicon 向けのサイズセットをワンクリックで、中身は `presets/presets.json` で差し替え可能
+- カンマ区切りで任意の正方サイズ列を指定して変換
+- 複数ファイルになる出力は ZIP にまとめてダウンロード（プリセットの `bundle` 設定に従う）
+- UI はブラウザだけで、見た目はニュートラルなツール寄りのレイアウト
 
 ## 対応画像形式
 
 ### 入力形式
+
 - PNG
 - JPEG/JPG
-- WebP
+- WebP（静止画想定）
 
 ### 出力形式
+
 - PNG
-- ICO（Webファビコン用・単一ファイルに複数サイズ内包可）
-- ICNS（macOSアプリアイコン。`iconutil`が無い場合は`.iconset.zip`を返却）
+- ICO（Web ファビコン用。1 ファイルに複数サイズを内包できる）
+- ICNS（macOS アプリアイコン。`iconutil` が無い環境では `.iconset` 相当を ZIP で返す）
 
 ## インストールと起動
 
-### uvを使用する場合（推奨）
+### uv を使う（推奨）
 
-#### 1. 依存パッケージのインストール
+依存のインストール:
 
 ```bash
 uv sync
 ```
 
-#### 2. サーバーの起動
+サーバー起動:
 
 ```bash
 uv run server.py
 ```
 
-デフォルトでは`0.0.0.0:8000`で起動するため、外部からもアクセス可能です。
-
-ポートを指定する場合：
+デフォルトは `0.0.0.0:8000` なので、同一 LAN からも見える設定です。ローカルだけにしたい場合は `-H localhost`。ポートは `-p` で変更できます。
 
 ```bash
 uv run server.py -p 3000
-```
-
-ホストを指定する場合（localhostのみに制限）：
-
-```bash
 uv run server.py -H localhost
 ```
 
-または、エントリーポイントを使用：
+エントリポイント経由:
 
 ```bash
 uv run genico
 ```
 
-### 従来の方法（pip使用）
+ブラウザで `http://localhost:8000` を開く（ポートを変えた場合はその番号に合わせる）。
 
-#### 1. 依存パッケージのインストール
+### pip を使う場合
 
 ```bash
 pip install -r requirements.txt
-```
-
-#### 2. サーバーの起動
-
-```bash
 python server.py
 ```
 
-デフォルトでは`0.0.0.0:8000`で起動するため、外部からもアクセス可能です。
-
-ポートを指定する場合：
-
-```bash
-python server.py -p 3000
-```
-
-ホストを指定する場合（localhostのみに制限）：
-
-```bash
-python server.py -H localhost
-```
-
-### 3. ブラウザでアクセス
-
-```
-http://localhost:8000
-```
+起動時のオプション（`-p` / `-H`）と挙動は、上の uv の例と同じです。`python server.py` と `uv run server.py` の違いは、Python 環境の作り方だけです。
 
 ## 使用方法
 
-1. **画像をアップロード**: ドラッグ&ドロップまたは「ファイルを選択」ボタンで画像をアップロード
-2. **プリセットを選択**: 目的に応じたプリセットカードをクリック
-3. **カスタムサイズ**: 任意のサイズをカンマ区切りで入力（例: 16,32,48,64）
-4. **ダウンロード**: 処理完了後、自動的にダウンロードが開始されます
+1. 画像をアップロード（ドラッグ＆ドロップまたは「ファイルを選択」）
+2. プリセットのカードをクリックするか、カスタムサイズ欄に `16,32,48,64` のようにカンマ区切りで入力して変換
+3. 処理が終わるとブラウザのダウンロードで成果物を受け取る
+
+長方形の画像は、サーバー側で中央から正方形にクロップしてからリサイズします。端が落ちるので、重要なモチーフは中央寄せにしておくと安全です。
 
 ## プリセットの追加（設定ファイルの書き方）
 
-`presets/presets.json`にプリセットを定義します。各エントリは以下のキーを持てます：
+`presets/presets.json` にプリセットを定義します。各エントリに使えるキーは次のとおりです。
 
 - `name`（必須）: 表示名
 - `sizes`（必須）: 出力サイズの配列（整数、正方）
 - `format`（必須）: 出力形式（`png` | `ico` | `icns`）
 - `bundle`（任意）: 出力の束ね方
-  - `single`: 単一ファイルとして返却（例: 1つの`ico`）
-  - `zip`: 複数ファイルをZIPで返却（例: 複数PNG）
-  - `icns`: 可能なら`.icns`単体で返却（不可なら`.iconset.zip`）
-- `filename_pattern`（任意）: ファイル名規則。以下のプレースホルダを使用可能
+  - `single`: 単一ファイル（例: 1 つの `ico`）
+  - `zip`: 複数ファイルを ZIP で返す（例: 複数 PNG）
+  - `icns`: 可能なら `.icns` 単体（不可なら `.iconset.zip`）
+- `filename_pattern`（任意）: ファイル名規則。プレースホルダ:
   - `{size}`: サイズ数値（例: 16）
-  - `{preset}`: プリセットID（例: chrome_extension）
-  - `{ext}`: 拡張子（`png`/`ico`/`icns`）
+  - `{preset}`: プリセット ID（例: chrome_extension）
+  - `{ext}`: 拡張子（`png` / `ico` / `icns`）
 
-最小例（従来と互換）:
+最小例:
 
 ```json
 {
@@ -127,27 +102,27 @@ http://localhost:8000
 }
 ```
 
-推奨例（Chrome拡張・macOS・favicon）:
+同梱プリセットに近い例（実際の `sizes` や `name` はリポジトリの `presets/presets.json` を参照）:
 
 ```json
 {
   "chrome_extension": {
-    "name": "Chrome拡張アイコン",
+    "name": "Chrome Extension",
     "sizes": [16, 32, 48, 128],
     "format": "png",
     "bundle": "zip",
     "filename_pattern": "icon{size}.png"
   },
   "macos_icon": {
-    "name": "macOSアイコン",
+    "name": "macOS App Icon",
     "sizes": [16, 32, 64, 128, 256, 512, 1024],
     "format": "icns",
     "bundle": "icns",
     "filename_pattern": "AppIcon.icns"
   },
   "favicon": {
-    "name": "Webファビコン",
-    "sizes": [16, 32, 48],
+    "name": "Favicon (Windows App Icon / Web)",
+    "sizes": [256, 128, 48, 32, 16],
     "format": "ico",
     "bundle": "single",
     "filename_pattern": "favicon.ico"
@@ -156,17 +131,13 @@ http://localhost:8000
 ```
 
 注意:
-- macOS用`icns`はシステムに`iconutil`がある場合のみ直接`.icns`を生成します。無い場合は`.iconset`構造をZIPで返します。
-- 設定変更後はサーバー再起動で反映されます。
+
+- macOS 用 `icns` は、マシンに `iconutil` があるときだけバイナリの `.icns` を返し、無い場合は `.iconset` 相当を ZIP にします
+- 設定は起動時に読み込むので、JSON を直したあとはサーバーを再起動してください
 
 ## 技術仕様
 
-- **Python**: 3.8+
-- **Webフレームワーク**: 標準ライブラリ（http.server）
-- **画像処理**: Pillow
-- **フロントエンド**: バニラJavaScript + CSS
-- **最大ファイルサイズ**: 10MB
-- **ポート**: 8000（デフォルト）
+Python 3.8 以上。HTTP は標準ライブラリの `http.server`、画像処理は Pillow、フロントはバニラ JavaScript と CSS。アップロードは 1 ファイル 10MB まで。既定の待ち受けポートは 8000 です。
 
 ## ライセンス
 
