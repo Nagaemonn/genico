@@ -14,6 +14,7 @@
     --danger: #b91c1c;
     --danger-bg: #f9f2f3;
     --danger-border: #f0d5d8;
+    --on-accent: #ffffff;
     --radius-sm: 6px;
     --radius-md: 8px;
     --shadow-sm: 0 1px 2px rgba(56, 62, 71, 0.045);
@@ -24,21 +25,22 @@
 @media (prefers-color-scheme: dark) {
     :root {
         color-scheme: dark;
-        --bg: #171e27;
-        --surface: #1f2733;
-        --text: #cfd8e3;
-        --text-muted: #8b97a8;
-        --border: #323d4d;
-        --border-strong: #435061;
-        --accent: #475569;
-        --accent-hover: #64748b;
-        --accent-subtle: rgba(148, 163, 184, 0.12);
-        --focus-ring: rgba(148, 163, 184, 0.3);
+        --bg: rgb(32, 32, 32);
+        --surface: rgb(40, 40, 40);
+        --text: rgba(255, 255, 255, 0.94);
+        --text-muted: rgba(255, 255, 255, 0.7);
+        --border: rgb(40, 40, 40);
+        --border-strong: rgba(255, 255, 255, 0.2);
+        --accent: rgba(255, 255, 255, 0.94);
+        --accent-hover: rgba(255, 255, 255, 0.88);
+        --accent-subtle: rgba(255, 255, 255, 0.08);
+        --focus-ring: rgba(255, 255, 255, 0.28);
         --danger: #ea8b85;
         --danger-bg: rgba(185, 28, 28, 0.14);
         --danger-border: rgba(232, 146, 140, 0.28);
         --shadow-sm: 0 1px 2px rgba(8, 12, 20, 0.28);
         --shadow-card: 0 1px 4px rgba(8, 12, 20, 0.34);
+        --on-accent: rgb(32, 32, 32);
     }
 }
 
@@ -175,7 +177,7 @@
 
 .upload-btn {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border: none;
     padding: 0.5rem 1.1rem;
     border-radius: var(--radius-sm);
@@ -422,7 +424,7 @@
 
 .custom-btn {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-sm);
